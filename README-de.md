@@ -69,7 +69,7 @@ Webseite mit gebündelten und ungebündelten Dateien:
 
 ## Installation
 
-[Erweiterung herunterladen](https://github.com/datenstrom/yellow-extensions/raw/master/downloads/bundle.zip) und die Zip-Datei in dein `system/extensions`-Verzeichnis kopieren. Rechtsklick bei Safari.
+[Erweiterung herunterladen](https://github.com/annaesvensson/yellow-bundle/archive/main.zip) und die Zip-Datei in dein `system/extensions`-Verzeichnis kopieren. Rechtsklick bei Safari.
 
 Diese Erweiterung benutzt [Minify 1.3.68](https://github.com/matthiasmullie/minify) von Matthias Mullie.
 

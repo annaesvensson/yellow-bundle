@@ -1,5 +1,5 @@
 <?php
-// Bundle extension, https://github.com/datenstrom/yellow-extensions/tree/master/source/bundle
+// Bundle extension, https://github.com/annaesvensson/yellow-bundle
 
 class YellowBundle {
     const VERSION = "0.8.27";
