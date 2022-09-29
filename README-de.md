@@ -2,19 +2,19 @@
 
 # Bundle 0.8.27
 
-Bundle website files.
+Webseiten-Dateien bündeln.
 
-<p align="center"><img src="bundle-screenshot.png?raw=true" alt="Screenshot"></p>
+<p align="center"><img src="bundle-screenshot.png?raw=true" alt="Bildschirmfoto"></p>
 
-## How to bundle website files
+## Wie man Webseiten-Dateien bündelt
 
-This extension bundles and minifies files for a better loading time. Your website may contain multiple CSS and JavaScript files. Usually these will be cached in the browser, but nevertheless each file has to be checked. This is where a file bundler comes in. It looks in the HTML header for included files and replaces them with one single file for CSS and one for JavaScript.
+Diese Erweiterung bündelt und verkleinert Dateien für eine bessere Ladezeit. Deine Webseite enthält möglicherweise mehrere CSS- und JavaScript-Dateien. In der Regel werden die im Browser zwischengespeichert, trotzdem muss jede Datei überprüft werden. Hier kommt der Dateibündler ins Spiel. Er sucht im HTML-Header nach eingebundenen Dateien und ersetzt diese durch eine einzelne Datei für CSS und eine für JavaScript.
 
-If you don't want that a file is bundled, specify `data-bundle="exclude"` in the HTML header.
+Falls du nicht willst dass eine Datei gebündelt wird, kannst du `data-bundle="exclude"` im HTML-Header angeben.
 
-## Examples
+## Beispiele
 
-Website with unbundled CSS and JavaScript files:
+Webseite mit ungebündelten CSS- und JavaScript-Dateien:
 
 ```
 <!DOCTYPE html>
@@ -34,7 +34,7 @@ Website with unbundled CSS and JavaScript files:
 </html>
 ```
 
-Website with bundled CSS and JavaScript files:
+Webseite mit gebündelten CSS- und JavaScript-Dateien:
 
 ```
 <!DOCTYPE html>
@@ -50,7 +50,7 @@ Website with bundled CSS and JavaScript files:
 </html>
 ```
 
-Website with bundled and unbundled files:
+Webseite mit gebündelten und ungebündelten Dateien:
 
 ```
 <!DOCTYPE html>
@@ -69,10 +69,10 @@ Website with bundled and unbundled files:
 
 ## Installation
 
-[Download extension](https://github.com/datenstrom/yellow-extensions/raw/master/downloads/bundle.zip) and copy zip file into your `system/extensions` folder. Right click if you use Safari.
+[Erweiterung herunterladen](https://github.com/datenstrom/yellow-extensions/raw/master/downloads/bundle.zip) und die Zip-Datei in dein `system/extensions`-Verzeichnis kopieren. Rechtsklick bei Safari.
 
-This extension uses [Minify 1.3.68](https://github.com/matthiasmullie/minify) by Matthias Mullie.
+Diese Erweiterung benutzt [Minify 1.3.68](https://github.com/matthiasmullie/minify) von Matthias Mullie.
 
-## Developer
+## Entwickler
 
-Datenstrom. [Get help](https://datenstrom.se/yellow/help/).
+Datenstrom. [Hilfe finden](https://datenstrom.se/de/yellow/help/).
