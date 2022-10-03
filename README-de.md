@@ -75,4 +75,4 @@ Diese Erweiterung benutzt [Minify 1.3.68](https://github.com/matthiasmullie/mini
 
 ## Entwickler
 
-Datenstrom. [Hilfe finden](https://datenstrom.se/de/yellow/help/).
+Anna Svensson. [Hilfe finden](https://datenstrom.se/de/yellow/help/).

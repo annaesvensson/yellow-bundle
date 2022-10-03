@@ -75,4 +75,4 @@ This extension uses [Minify 1.3.68](https://github.com/matthiasmullie/minify) by
 
 ## Developer
 
-Datenstrom. [Get help](https://datenstrom.se/yellow/help/).
+Anna Svensson. [Get help](https://datenstrom.se/yellow/help/).

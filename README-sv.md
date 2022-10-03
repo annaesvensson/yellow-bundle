@@ -75,4 +75,4 @@ Detta tilläg använder [Minify 1.3.68](https://github.com/matthiasmullie/minify
 
 ## Utvecklare
 
-Datenstrom. [Få hjälp](https://datenstrom.se/sv/yellow/help/).
+Anna Svensson. [Få hjälp](https://datenstrom.se/sv/yellow/help/).
