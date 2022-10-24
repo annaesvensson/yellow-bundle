@@ -71,7 +71,7 @@ Webbplats med bundna och obundna filer:
 
 [Ladda ner tillägg](https://github.com/annaesvensson/yellow-bundle/archive/main.zip) och kopiera zip-fil till din `system/extensions` mapp. Högerklicka om du använder Safari.
 
-Detta tilläg använder [Minify 1.3.68](https://github.com/matthiasmullie/minify) av Matthias Mullie.
+Detta tilläg innehåller [Minify 1.3.68](https://github.com/matthiasmullie/minify) av Matthias Mullie.
 
 ## Utvecklare
 
