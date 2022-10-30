@@ -2,7 +2,7 @@
 // Bundle extension, https://github.com/annaesvensson/yellow-bundle
 
 class YellowBundle {
-    const VERSION = "0.8.27";
+    const VERSION = "0.8.28";
     public $yellow;         // access to API
 
     // Handle initialisation
@@ -91,7 +91,7 @@ class YellowBundle {
             if ($type=="css") {
                 $data[$locationBundle] = "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".htmlspecialchars($locationBundle)."\" />\n";
             } else {
-                $data[$locationBundle] = "<script type=\"text/javascript\" ${rawDataAttribute}src=\"".htmlspecialchars($locationBundle)."\"></script>\n";
+                $data[$locationBundle] = "<script type=\"text/javascript\" {$rawDataAttribute}src=\"".htmlspecialchars($locationBundle)."\"></script>\n";
             }
             if ($this->yellow->toolbox->getFileModified($fileNameBundle)!=$modified) {
                 $fileDataBundle = "";
