@@ -69,7 +69,7 @@ Website with bundled and unbundled files:
 
 ## Installation
 
-[Download extension](https://github.com/annaesvensson/yellow-bundle/archive/main.zip) and copy zip file into your `system/extensions` folder. Right click if you use Safari.
+[Download extension](https://github.com/annaesvensson/yellow-bundle/archive/main.zip) and copy ZIP file into your `system/extensions` folder. [Learn more about extensions](https://github.com/annaesvensson/yellow-update).
 
 This extension includes [Minify 1.3.68](https://github.com/matthiasmullie/minify) by Matthias Mullie.
 
