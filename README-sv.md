@@ -69,7 +69,7 @@ Webbplats med bundna och obundna filer:
 
 ## Tack
 
-Detta tilläg innehåller [Minify 1.3.68](https://github.com/matthiasmullie/minify) av Matthias Mullie. Tack för det fantastiska arbetet.
+Detta tilläg innehåller [Minify 1.3.68](https://github.com/matthiasmullie/minify) av Matthias Mullie. Tack för ett bra jobb.
 
 ## Installation
 

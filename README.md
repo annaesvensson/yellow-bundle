@@ -69,7 +69,7 @@ Website with bundled and unbundled files:
 
 ## Acknowledgments
 
-This extension includes [Minify 1.3.68](https://github.com/matthiasmullie/minify) by Matthias Mullie. Thanks for the great work.
+This extension includes [Minify 1.3.68](https://github.com/matthiasmullie/minify) by Matthias Mullie. Thank you for the good work.
 
 ## Installation
 

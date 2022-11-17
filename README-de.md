@@ -69,7 +69,7 @@ Webseite mit gebündelten und ungebündelten Dateien:
 
 ## Danksagung
 
-Diese Erweiterung enthält [Minify 1.3.68](https://github.com/matthiasmullie/minify) von Matthias Mullie. Danke für die tolle Arbeit.
+Diese Erweiterung enthält [Minify 1.3.68](https://github.com/matthiasmullie/minify) von Matthias Mullie. Danke für die gute Arbeit.
 
 ## Installation
 
