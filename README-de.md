@@ -67,11 +67,13 @@ Webseite mit gebündelten und ungebündelten Dateien:
 </html>
 ```
 
+## Danksagung
+
+Diese Erweiterung enthält [Minify 1.3.68](https://github.com/matthiasmullie/minify) von Matthias Mullie. Danke für die tolle Arbeit.
+
 ## Installation
 
 [Erweiterung herunterladen](https://github.com/annaesvensson/yellow-bundle/archive/main.zip) und die ZIP-Datei in dein `system/extensions`-Verzeichnis kopieren. [Weitere Informationen zu Erweiterungen](https://github.com/annaesvensson/yellow-update/tree/main/README-de.md).
-
-Diese Erweiterung enthält [Minify 1.3.68](https://github.com/matthiasmullie/minify) von Matthias Mullie.
 
 ## Entwickler
 
