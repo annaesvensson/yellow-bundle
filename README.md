@@ -67,7 +67,7 @@ Website with bundled and unbundled files:
 </html>
 ```
 
-## Acknowledgments
+## Acknowledgements
 
 This extension includes [Minify 1.3.68](https://github.com/matthiasmullie/minify) by Matthias Mullie. Thank you for the good work.
 
