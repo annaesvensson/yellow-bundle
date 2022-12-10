@@ -6,6 +6,10 @@ Webseiten-Dateien bündeln.
 
 <p align="center"><img src="bundle-screenshot.png?raw=true" alt="Bildschirmfoto"></p>
 
+## Wie man eine Erweiterung installiert
+
+[ZIP-Datei herunterladen](https://github.com/annaesvensson/yellow-bundle/archive/main.zip) und in dein `system/extensions`-Verzeichnis kopieren. [Weitere Informationen zu Erweiterungen](https://github.com/annaesvensson/yellow-update/tree/main/README-de.md).
+
 ## Wie man Webseiten-Dateien bündelt
 
 Diese Erweiterung bündelt und verkleinert Dateien für eine bessere Ladezeit. Deine Webseite enthält möglicherweise mehrere CSS- und JavaScript-Dateien. In der Regel werden die im Browser zwischengespeichert, trotzdem muss jede Datei überprüft werden. Hier kommt der Dateibündler ins Spiel. Er sucht im HTML-Header nach eingebundenen Dateien und ersetzt diese durch eine einzelne Datei für CSS und eine für JavaScript.
@@ -70,10 +74,6 @@ Webseite mit gebündelten und ungebündelten Dateien:
 ## Danksagung
 
 Diese Erweiterung enthält [Minify 1.3.68](https://github.com/matthiasmullie/minify) von Matthias Mullie. Danke für die gute Arbeit.
-
-## Installation
-
-[Erweiterung herunterladen](https://github.com/annaesvensson/yellow-bundle/archive/main.zip) und die ZIP-Datei in dein `system/extensions`-Verzeichnis kopieren. [Weitere Informationen zu Erweiterungen](https://github.com/annaesvensson/yellow-update/tree/main/README-de.md).
 
 ## Entwickler
 

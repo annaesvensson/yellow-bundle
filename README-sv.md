@@ -6,6 +6,10 @@ Bundla webbplatsfiler.
 
 <p align="center"><img src="bundle-screenshot.png?raw=true" alt="Skärmdump"></p>
 
+## Hur man installerar ett tillägg
+
+[Ladda ner ZIP-fil](https://github.com/annaesvensson/yellow-bundle/archive/main.zip) och kopiera den till din `system/extensions` mapp. [Läs mer om tillägg](https://github.com/annaesvensson/yellow-update/tree/main/README-sv.md).
+
 ## Hur man buntar webbplatsfiler
 
 Detta tillägg buntar och minskar filer för bättre laddningstid. Din webbplats kan innehålla flera CSS- och JavaScript-filer. Som regel är de cachade i webbläsaren, men varje fil måste kontrolleras. Det är här file-bundlern kommer in. Den letar i HTML-headern efter inbäddade filer och ersätter dem med en enda fil för CSS och en för JavaScript.
@@ -70,10 +74,6 @@ Webbplats med bundna och obundna filer:
 ## Tack
 
 Detta tilläg innehåller [Minify 1.3.68](https://github.com/matthiasmullie/minify) av Matthias Mullie. Tack för ett bra jobb.
-
-## Installation
-
-[Ladda ner tillägg](https://github.com/annaesvensson/yellow-bundle/archive/main.zip) och kopiera ZIP-fil till din `system/extensions` mapp. [Läs mer om tillägg](https://github.com/annaesvensson/yellow-update/tree/main/README-sv.md).
 
 ## Utvecklare
 

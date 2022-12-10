@@ -6,6 +6,10 @@ Bundle website files.
 
 <p align="center"><img src="bundle-screenshot.png?raw=true" alt="Screenshot"></p>
 
+## How to install an extension
+
+[Download ZIP file](https://github.com/annaesvensson/yellow-bundle/archive/main.zip) and copy it into your `system/extensions` folder. [Learn more about extensions](https://github.com/annaesvensson/yellow-update).
+
 ## How to bundle website files
 
 This extension bundles and minifies files for a better loading time. Your website may contain multiple CSS and JavaScript files. Usually these will be cached in the browser, but nevertheless each file has to be checked. This is where a file bundler comes in. It looks in the HTML header for included files and replaces them with one single file for CSS and one for JavaScript.
@@ -70,10 +74,6 @@ Website with bundled and unbundled files:
 ## Acknowledgements
 
 This extension includes [Minify 1.3.68](https://github.com/matthiasmullie/minify) by Matthias Mullie. Thank you for the good work.
-
-## Installation
-
-[Download extension](https://github.com/annaesvensson/yellow-bundle/archive/main.zip) and copy ZIP file into your `system/extensions` folder. [Learn more about extensions](https://github.com/annaesvensson/yellow-update).
 
 ## Developer
 
