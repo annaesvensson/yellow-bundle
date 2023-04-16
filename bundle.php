@@ -2,7 +2,7 @@
 // Bundle extension, https://github.com/annaesvensson/yellow-bundle
 
 class YellowBundle {
-    const VERSION = "0.8.29";
+    const VERSION = "0.8.30";
     public $yellow;         // access to API
 
     // Handle initialisation
@@ -19,7 +19,7 @@ class YellowBundle {
                 $cleanup = $action!="daily" || !$this->isBundleRequired($entry);
                 if ($cleanup && !$this->yellow->toolbox->deleteFile($entry)) $statusCode = 500;
             }
-            if ($statusCode==500) $this->yellow->log("error", "Can't delete files in directory '$path'!");
+            if ($statusCode==500) $this->yellow->toolbox->log("error", "Can't delete files in directory '$path'!");
         }
     }
     
