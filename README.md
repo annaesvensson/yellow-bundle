@@ -4,7 +4,7 @@
 
 Bundle website files.
 
-<p align="center"><img src="bundle-screenshot.png?raw=true" alt="Screenshot"></p>
+<p align="center"><img src="SCREENSHOT.png?raw=true" alt="Screenshot"></p>
 
 ## How to install an extension
 
