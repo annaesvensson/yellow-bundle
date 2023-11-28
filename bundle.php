@@ -2,7 +2,7 @@
 // Bundle extension, https://github.com/annaesvensson/yellow-bundle
 
 class YellowBundle {
-    const VERSION = "0.8.30";
+    const VERSION = "0.8.31";
     public $yellow;         // access to API
 
     // Handle initialisation
@@ -36,15 +36,15 @@ class YellowBundle {
     public function normaliseHead($text) {
         $dataMeta = $dataLink = $dataCss = $dataScriptDefer = $dataScriptNow = $dataOther = array();
         foreach ($this->yellow->toolbox->getTextLines($text) as $line) {
-            if (preg_match("/^<meta (.*?)>$/i", $line) || preg_match("/^<title>(.*?)<\/title>$/i", $line)) {
+            if (preg_match("/^\s*<meta (.*?)>\s*$/i", $line) || preg_match("/^\s*<title>(.*?)<\/title>\s*$/i", $line)) {
                 array_push($dataMeta, $line);
-            } elseif (preg_match("/^<link (.*?)href=\"([^\"]+)\"(.*?)>$/i", $line, $matches)) {
+            } elseif (preg_match("/^\s*<link (.*?)href=\"([^\"]+)\"(.*?)>\s*$/i", $line, $matches)) {
                 if (preg_match("/\"stylesheet\"/i", $line)) {
                     if (!isset($dataCss[$matches[2]])) $dataCss[$matches[2]] = $line;
                 } else {
                     array_push($dataLink, $line);
                 }
-            } elseif (preg_match("/^<script (.*?)src=\"([^\"]+)\"(.*?)><\/script>$/i", $line, $matches)) {
+            } elseif (preg_match("/^\s*<script (.*?)src=\"([^\"]+)\"(.*?)><\/script>\s*$/i", $line, $matches)) {
                 if (preg_match("/\"defer\"/i", $line)) {
                     if (!isset($dataScriptDefer[$matches[2]])) $dataScriptDefer[$matches[2]] = $line;
                 } else {
