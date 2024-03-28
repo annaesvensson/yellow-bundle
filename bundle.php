@@ -2,7 +2,7 @@
 // Bundle extension, https://github.com/annaesvensson/yellow-bundle
 
 class YellowBundle {
-    const VERSION = "0.8.31";
+    const VERSION = "0.8.32";
     public $yellow;         // access to API
 
     // Handle initialisation
@@ -16,8 +16,8 @@ class YellowBundle {
             $statusCode = 200;
             $path = $this->yellow->system->get("coreExtensionDirectory");
             foreach ($this->yellow->toolbox->getDirectoryEntries($path, "/^bundle-(.*)/", false, false) as $entry) {
-                $cleanup = $action!="daily" || !$this->isBundleRequired($entry);
-                if ($cleanup && !$this->yellow->toolbox->deleteFile($entry)) $statusCode = 500;
+                if ($action==="daily" && $this->isFileRequired($entry)) continue;
+                if (!$this->yellow->toolbox->deleteFile($entry)) $statusCode = 500;
             }
             if ($statusCode==500) $this->yellow->toolbox->log("error", "Can't delete files in directory '$path'!");
         }
@@ -185,15 +185,15 @@ class YellowBundle {
         return substru(md5($autoVersioning.$base.implode($fileNames)), 0, 10);
     }
     
-    // Check if bundle is required
-    public function isBundleRequired($fileName) {
+    // Check if file is required
+    public function isFileRequired($fileName) {
         list($dummy, $fileNames, $modified) = $this->getBundleInformation($fileName);
         $idExpected = $idCurrent = $this->getBundleId($fileNames, $modified);
         if (preg_match("/^bundle-(.*)\.min/", basename($fileName), $matches)) $idCurrent = $matches[1];
-        return $idExpected==$idCurrent && !$this->yellow->system->get("coreDebugMode");
+        return $idExpected==$idCurrent;
     }
 }
-    
+
 /**
  * Abstract minifier class.
  *
