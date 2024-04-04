@@ -2,7 +2,7 @@
 // Bundle extension, https://github.com/annaesvensson/yellow-bundle
 
 class YellowBundle {
-    const VERSION = "0.8.32";
+    const VERSION = "0.9.1";
     public $yellow;         // access to API
 
     // Handle initialisation
@@ -14,7 +14,7 @@ class YellowBundle {
     public function onUpdate($action) {
         if ($action=="clean" || $action=="daily" || $action=="uninstall") {
             $statusCode = 200;
-            $path = $this->yellow->system->get("coreExtensionDirectory");
+            $path = $this->yellow->system->get("coreWorkerDirectory");
             foreach ($this->yellow->toolbox->getDirectoryEntries($path, "/^bundle-(.*)/", false, false) as $entry) {
                 if ($action==="daily" && $this->isFileRequired($entry)) continue;
                 if (!$this->yellow->toolbox->deleteFile($entry)) $statusCode = 500;
@@ -78,14 +78,14 @@ class YellowBundle {
             $location = substru($key, strlenu($base));
             $fileName = $this->yellow->lookup->findFileFromMediaLocation($location);
             $modified = max($modified, $this->yellow->toolbox->getFileModified($fileName));
-            if (is_readable($fileName)) {
+            if (!is_string_empty($fileName)) {
                 array_push($fileNames, $fileName);
                 unset($data[$key]);
             }
         }
         if (!is_array_empty($fileNames)) {
             $id = $this->getBundleId($fileNames, $modified);
-            $fileNameBundle = $this->yellow->system->get("coreExtensionDirectory")."bundle-$id.min.$type";
+            $fileNameBundle = $this->yellow->system->get("coreWorkerDirectory")."bundle-$id.min.$type";
             $locationBundle = $base.$this->yellow->system->get("coreExtensionLocation")."bundle-$id.min.$type";
             $rawDataAttribute = $attribute=="defer" ? "defer=\"defer\" " : "";
             if ($type=="css") {
@@ -116,12 +116,7 @@ class YellowBundle {
     // Process bundle, convert URLs
     public function processBundleConvert($scheme, $address, $base, $fileData, $fileName, $type) {
         if ($type=="css") {
-            $themeDirectoryLength = strlenu($this->yellow->system->get("coreThemeDirectory"));
-            if (substru($fileName, 0, $themeDirectoryLength) == $this->yellow->system->get("coreThemeDirectory")) {
-                $base .= $this->yellow->system->get("coreThemeLocation");
-            } else {
-                $base .= $this->yellow->system->get("coreExtensionLocation");
-            }
+            $base .= $this->yellow->system->get("coreExtensionLocation");
             $thisCompatible = $this;
             $callback = function ($matches) use ($thisCompatible, $scheme, $address, $base) {
                 $url = $thisCompatible->yellow->lookup->normaliseUrl($scheme, $address, $base, $matches[1], false);
@@ -162,14 +157,14 @@ class YellowBundle {
         $fileData = $this->yellow->toolbox->readFile($fileName);
         foreach ($this->yellow->toolbox->getTextLines($fileData) as $line) {
             if (preg_match("/^\/\* (\S*) \*\/$/", $line, $matches)) {
-                $fileNameOne = $this->yellow->system->get("coreExtensionDirectory").$matches[1];
-                $fileNameTwo = $this->yellow->system->get("coreThemeDirectory").$matches[1];
-                if (is_readable($fileNameOne)) {
+                $fileNameOne = $this->yellow->system->get("coreThemeDirectory").$matches[1];
+                $fileNameTwo = $this->yellow->system->get("coreWorkerDirectory").$matches[1];
+                if (is_file($fileNameOne)) {
                     array_push($locations, $this->yellow->system->get("coreExtensionLocation").$matches[1]);
                     array_push($fileNames, $fileNameOne);
                     $modified = max($modified, $this->yellow->toolbox->getFileModified($fileNameOne));
-                } elseif (is_readable($fileNameTwo)) {
-                    array_push($locations, $this->yellow->system->get("coreThemeLocation").$matches[1]);
+                } else {
+                    array_push($locations, $this->yellow->system->get("coreExtensionLocation").$matches[1]);
                     array_push($fileNames, $fileNameTwo);
                     $modified = max($modified, $this->yellow->toolbox->getFileModified($fileNameTwo));
                 }
