@@ -1,6 +1,6 @@
 <p align="right"><a href="README-de.md">Deutsch</a> &nbsp; <a href="README.md">English</a> &nbsp; <a href="README-sv.md">Svenska</a></p>
 
-# Bundle 0.9.1
+# Bundle 0.9.2
 
 Bundla webbplatsfiler.
 
@@ -25,11 +25,11 @@ Webbplats med obundna CSS- och JavaScript-filer:
 <html>
 <head>
 <title>Example page</title>
-<link rel="stylesheet" type="text/css" media="all" href="/media/extensions/gallery.css" />
-<link rel="stylesheet" type="text/css" media="all" href="/media/extensions/icon.css" />
-<link rel="stylesheet" type="text/css" media="all" href="/media/extensions/stockholm.css" />
-<script type="text/javascript" defer="defer" src="/media/extensions/gallery-photoswipe.min.js"></script>
-<script type="text/javascript" defer="defer" src="/media/extensions/gallery.js"></script>
+<link rel="stylesheet" type="text/css" media="all" href="/assets/gallery.css" />
+<link rel="stylesheet" type="text/css" media="all" href="/assets/icon.css" />
+<link rel="stylesheet" type="text/css" media="all" href="/assets/stockholm.css" />
+<script type="text/javascript" defer="defer" src="/assets/gallery-photoswipe.min.js"></script>
+<script type="text/javascript" defer="defer" src="/assets/gallery.js"></script>
 </head>
 <body>
 <h1>Hello world</h1>
@@ -44,8 +44,8 @@ Webbplats med bundna CSS- och JavaScript-filer:
 <html>
 <head>
 <title>Example page</title>
-<link rel="stylesheet" type="text/css" media="all" href="/media/extensions/bundle-dfd1ef8a4c.min.css" />
-<script type="text/javascript" defer="defer" src="/media/extensions/bundle-3808f805bc.min.js"></script>
+<link rel="stylesheet" type="text/css" media="all" href="/assets/bundle-dfd1ef8a4c.min.css" />
+<script type="text/javascript" defer="defer" src="/assets/bundle-3808f805bc.min.js"></script>
 </head>
 <body>
 <h1>Hello world</h1>
@@ -60,9 +60,9 @@ Webbplats med bundna och obundna filer:
 <html>
 <head>
 <title>Example page</title>
-<link rel="stylesheet" type="text/css" media="all" href="/media/extensions/bundle-dfd1ef8a4c.min.css" />
-<script type="text/javascript" defer="defer" src="/media/extensions/bundle-3808f805bc.min.js"></script>
-<script type="text/javascript" defer="defer" data-bundle="exclude" src="/media/extensions/debug.js"></script>
+<link rel="stylesheet" type="text/css" media="all" href="/assets/bundle-dfd1ef8a4c.min.css" />
+<script type="text/javascript" defer="defer" src="/assets/bundle-3808f805bc.min.js"></script>
+<script type="text/javascript" defer="defer" data-bundle="exclude" src="/assets/debug.js"></script>
 </head>
 <body>
 <h1>Hello world</h1>
