@@ -2,7 +2,7 @@
 // Bundle extension, https://github.com/annaesvensson/yellow-bundle
 
 class YellowBundle {
-    const VERSION = "0.9.2";
+    const VERSION = "0.9.3";
     public $yellow;         // access to API
 
     // Handle initialisation
@@ -104,7 +104,7 @@ class YellowBundle {
                 }
                 if ($type=="css") $fileDataBundle = $this->normaliseCss($fileDataBundle);
                 if (is_file($fileNameBundle)) $this->yellow->toolbox->deleteFile($fileNameBundle);
-                if (!$this->yellow->toolbox->createFile($fileNameBundle, $fileDataBundle) ||
+                if (!$this->yellow->toolbox->writeFile($fileNameBundle, $fileDataBundle) ||
                     !$this->yellow->toolbox->modifyFile($fileNameBundle, $modified)) {
                     $this->yellow->page->error(500, "Can't write file '$fileNameBundle'!");
                 }
