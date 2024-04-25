@@ -2,7 +2,7 @@
 // Bundle extension, https://github.com/annaesvensson/yellow-bundle
 
 class YellowBundle {
-    const VERSION = "0.9.4";
+    const VERSION = "0.9.5";
     public $yellow;         // access to API
 
     // Handle initialisation
@@ -117,7 +117,7 @@ class YellowBundle {
     public function processBundleConvert($scheme, $address, $base, $fileData, $fileName, $type) {
         if ($type=="css") {
             $assetLocation = $base.$this->yellow->system->get("coreAssetLocation");
-            $callback = function ($matches) use ($scheme, $address, $assetLocation) {
+            $callback = function ($matches) use ($assetLocation) {
                 if (!preg_match("/^\w+:/", $matches[1])) {
                     $url = $assetLocation.$matches[1];
                 } else {
