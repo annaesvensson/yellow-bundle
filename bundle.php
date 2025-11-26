@@ -2,7 +2,7 @@
 // Bundle extension, https://github.com/annaesvensson/yellow-bundle
 
 class YellowBundle {
-    const VERSION = "0.9.6";
+    const VERSION = "0.9.7";
     public $yellow;         // access to API
 
     // Handle initialisation
@@ -402,7 +402,7 @@ abstract class Minify
      * Save to file.
      *
      * @param string $content The minified data
-     * @param string $path    The path to save the minified data to
+     * @param string $path The path to save the minified data to
      *
      * @throws IOException
      */
@@ -421,7 +421,7 @@ abstract class Minify
      * If $replacement is a string, it must be plain text. Placeholders like $1 or \2 don't work.
      * If you need that functionality, use a callback instead.
      *
-     * @param string          $pattern     PCRE pattern
+     * @param string $pattern PCRE pattern
      * @param string|callable $replacement Replacement value for matched pattern
      */
     protected function registerPattern($pattern, $replacement = '')
@@ -430,6 +430,45 @@ abstract class Minify
         $pattern .= 'S';
 
         $this->patterns[] = array($pattern, $replacement);
+    }
+
+    /**
+     * Both JS and CSS use the same form of multi-line comment, so putting the common code here.
+     */
+    protected function stripMultilineComments()
+    {
+        $minifier = $this;
+        // Pattern for matching comments that we want to preserve
+        $keepPattern = '/^
+            # comment content
+            (?:
+                # either starts with an !
+                !
+            |
+                # or, after some number of characters which do not end the comment
+                (?:(?!\*\/).)*?
+
+                # there is either a @license or @preserve tag
+                @(?:license|preserve)
+            )
+            /ixs';
+        $callback = function ($match) use ($minifier, $keepPattern) {
+            if (preg_match($keepPattern, $match[1])) {
+                // Preserve the comment
+                $count = count($minifier->extracted);
+                $placeholder = '/*' . $count . '*/';
+                $minifier->extracted[$placeholder] = $match[0];
+            } else {
+                // Discard the comment but keep any single line feed
+                $placeholder = strncmp($match[0], "\n", 1) === 0 || substr($match[0], -1) === "\n"
+                    ? "\n"
+                    : '';
+            }
+
+            return $placeholder;
+        };
+
+        $this->registerPattern('/\n?\/\*(.*?)\*\/\n?/s', $callback);
     }
 
     /**
@@ -443,6 +482,8 @@ abstract class Minify
      * @param string $content The content to replace patterns in
      *
      * @return string The (manipulated) content
+     *
+     * @throws PatternMatchException
      */
     protected function replace($content)
     {
@@ -470,7 +511,8 @@ abstract class Minify
                 }
 
                 $match = null;
-                if (preg_match($pattern, $content, $match, PREG_OFFSET_CAPTURE, $processedOffset)) {
+                $matchResult = preg_match($pattern, $content, $match, PREG_OFFSET_CAPTURE, $processedOffset);
+                if ($matchResult) {
                     $matches[$i] = $match;
 
                     // we'll store the match position as well; that way, we
@@ -478,6 +520,11 @@ abstract class Minify
                     // the first (we'll still know where those others are)
                     $positions[$i] = $match[0][1];
                 } else {
+                    if ($matchResult === false) {
+                        throw PatternMatchException::fromLastError(
+                            "Failed to match pattern '$pattern' at $processedOffset"
+                        );
+                    }
                     // if the pattern couldn't be matched, there's no point in
                     // executing it again in later runs on this same content;
                     // ignore this one until we reach end of content
@@ -519,7 +566,7 @@ abstract class Minify
      * If it's a string, just pass it through.
      *
      * @param string|callable $replacement Replacement value
-     * @param array           $match       Match data, in PREG_OFFSET_CAPTURE form
+     * @param array $match Match data, in PREG_OFFSET_CAPTURE form
      *
      * @return string
      */
@@ -574,6 +621,11 @@ abstract class Minify
         };
 
         /*
+         * Quantifier {0,65535} is used instead of *? to avoid exceeding
+         * backtrack limit with large strings. 65535 is the maximum allowed
+         * (see https://www.php.net/manual/en/regexp.reference.repetition.php)
+         * and should be well sufficient for string representations here.
+         *
          * The \\ messiness explained:
          * * Don't count ' or " as end-of-string if it's escaped (has backslash
          * in front of it)
@@ -585,7 +637,8 @@ abstract class Minify
          * considered as escape-char (times 2) and to get it in the regex,
          * escaped (times 2)
          */
-        $this->registerPattern('/([' . $chars . '])(.*?(?<!\\\\)(\\\\\\\\)*+)\\1/s', $callback);
+
+        $this->registerPattern('/([' . $chars . '])(.{0,65535}?(?<!\\\\)(\\\\\\\\)*+)\\1/s', $callback);
     }
 
     /**
@@ -623,14 +676,20 @@ abstract class Minify
         $parsed = parse_url($path);
         if (
             // file is elsewhere
-            isset($parsed['host']) ||
+            isset($parsed['host'])
             // file responds to queries (may change, or need to bypass cache)
-            isset($parsed['query'])
+            || isset($parsed['query'])
         ) {
             return false;
         }
 
-        return strlen($path) < PHP_MAXPATHLEN && @is_file($path) && is_readable($path);
+        try {
+            return strlen($path) < PHP_MAXPATHLEN && @is_file($path) && is_readable($path);
+        }
+        // catch openbasedir exceptions which are not caught by @ on is_file()
+        catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -655,17 +714,17 @@ abstract class Minify
      * Attempts to write $content to the file specified by $handler. $path is used for printing exceptions.
      *
      * @param resource $handler The resource to write to
-     * @param string   $content The content to write
-     * @param string   $path    The path to the file (for exception printing only)
+     * @param string $content The content to write
+     * @param string $path The path to the file (for exception printing only)
      *
      * @throws IOException
      */
     protected function writeToFile($handler, $content, $path = '')
     {
         if (
-            !is_resource($handler) ||
-            ($result = @fwrite($handler, $content)) === false ||
-            ($result < strlen($content))
+            !is_resource($handler)
+            || ($result = @fwrite($handler, $content)) === false
+            || ($result < strlen($content))
         ) {
             throw new IOException('The file "' . $path . '" could not be written to. Check your disk space and file permissions.');
         }
@@ -762,11 +821,11 @@ class CSS extends Minify
     /**
      * Combine CSS from import statements.
      *
-     * Import statements will be loaded and their content merged into the original
-     * file, to save HTTP requests.
+     * \@import's will be loaded and their content merged into the original file,
+     * to save HTTP requests.
      *
-     * @param string   $source  The file to combine imports for
-     * @param string   $content The CSS content to combine imports for
+     * @param string $source The file to combine imports for
+     * @param string $content The CSS content to combine imports for
      * @param string[] $parents Parent paths, for circular reference checks
      *
      * @return string
@@ -901,7 +960,7 @@ class CSS extends Minify
      * @url(image.jpg) images will be loaded and their content merged into the
      * original file, to save HTTP requests.
      *
-     * @param string $source  The file to import files for
+     * @param string $source The file to import files for
      * @param string $content The CSS content to import files for
      *
      * @return string
@@ -952,6 +1011,8 @@ class CSS extends Minify
      * @param string[] $parents Parent paths, for circular reference checks
      *
      * @return string The minified data
+     *
+     * @throws PatternMatchException
      */
     public function execute($path = null, $parents = array())
     {
@@ -972,7 +1033,9 @@ class CSS extends Minify
             $css = $this->replace($css);
 
             $css = $this->stripWhitespace($css);
-            $css = $this->shortenColors($css);
+            $css = $this->convertLegacyColors($css);
+            $css = $this->cleanupModernColors($css);
+            $css = $this->shortenHEXColors($css);
             $css = $this->shortenZeroes($css);
             $css = $this->shortenFontWeights($css);
             $css = $this->stripEmptyTags($css);
@@ -1011,7 +1074,7 @@ class CSS extends Minify
      * (e.g. ../../images/image.gif, if the new CSS file is 1 folder deeper).
      *
      * @param ConverterInterface $converter Relative path converter
-     * @param string             $content   The CSS content to update relative urls for
+     * @param string $content The CSS content to update relative urls for
      *
      * @return string
      */
@@ -1136,62 +1199,152 @@ class CSS extends Minify
     }
 
     /**
-     * Shorthand hex color codes.
-     * #FF0000 -> #F00.
+     * Shorthand HEX color codes.
+     * #FF0000FF -> #f00 -> red
+     * #FF00FF00 -> transparent.
      *
-     * @param string $content The CSS content to shorten the hex color codes for
+     * @param string $content The CSS content to shorten the HEX color codes for
      *
      * @return string
      */
-    protected function shortenColors($content)
+    protected function shortenHexColors($content)
     {
-        $content = preg_replace('/(?<=[: ])#([0-9a-z])\\1([0-9a-z])\\2([0-9a-z])\\3(?:([0-9a-z])\\4)?(?=[; }])/i', '#$1$2$3$4', $content);
+        // shorten repeating patterns within HEX ..
+        $content = preg_replace('/(?<=[: ])#([0-9a-f])\\1([0-9a-f])\\2([0-9a-f])\\3(?:([0-9a-f])\\4)?(?=[; }])/i', '#$1$2$3$4', $content);
 
-        // remove alpha channel if it's pointless...
-        $content = preg_replace('/(?<=[: ])#([0-9a-z]{6})ff?(?=[; }])/i', '#$1', $content);
-        $content = preg_replace('/(?<=[: ])#([0-9a-z]{3})f?(?=[; }])/i', '#$1', $content);
+        // remove alpha channel if it's pointless ..
+        $content = preg_replace('/(?<=[: ])#([0-9a-f]{6})ff(?=[; }])/i', '#$1', $content);
+        $content = preg_replace('/(?<=[: ])#([0-9a-f]{3})f(?=[; }])/i', '#$1', $content);
+
+        // replace `transparent` with shortcut ..
+        $content = preg_replace('/(?<=[: ])#[0-9a-f]{6}00(?=[; }])/i', '#fff0', $content);
 
         $colors = array(
+            // make these more readable
+            '#00f' => 'blue',
+            '#dc143c' => 'crimson',
+            '#0ff' => 'cyan',
+            '#8b0000' => 'darkred',
+            '#696969' => 'dimgray',
+            '#ff69b4' => 'hotpink',
+            '#0f0' => 'lime',
+            '#fdf5e6' => 'oldlace',
+            '#87ceeb' => 'skyblue',
+            '#d8bfd8' => 'thistle',
             // we can shorten some even more by replacing them with their color name
-            '#F0FFFF' => 'azure',
-            '#F5F5DC' => 'beige',
-            '#A52A2A' => 'brown',
-            '#FF7F50' => 'coral',
-            '#FFD700' => 'gold',
+            '#f0ffff' => 'azure',
+            '#f5f5dc' => 'beige',
+            '#ffe4c4' => 'bisque',
+            '#a52a2a' => 'brown',
+            '#ff7f50' => 'coral',
+            '#ffd700' => 'gold',
             '#808080' => 'gray',
             '#008000' => 'green',
-            '#4B0082' => 'indigo',
-            '#FFFFF0' => 'ivory',
-            '#F0E68C' => 'khaki',
-            '#FAF0E6' => 'linen',
+            '#4b0082' => 'indigo',
+            '#fffff0' => 'ivory',
+            '#f0e68c' => 'khaki',
+            '#faf0e6' => 'linen',
             '#800000' => 'maroon',
             '#000080' => 'navy',
             '#808000' => 'olive',
-            '#CD853F' => 'peru',
-            '#FFC0CB' => 'pink',
-            '#DDA0DD' => 'plum',
+            '#ffa500' => 'orange',
+            '#da70d6' => 'orchid',
+            '#cd853f' => 'peru',
+            '#ffc0cb' => 'pink',
+            '#dda0dd' => 'plum',
             '#800080' => 'purple',
-            '#F00' => 'red',
-            '#FA8072' => 'salmon',
-            '#A0522D' => 'sienna',
-            '#C0C0C0' => 'silver',
-            '#FFFAFA' => 'snow',
-            '#D2B48C' => 'tan',
-            '#FF6347' => 'tomato',
-            '#EE82EE' => 'violet',
-            '#F5DEB3' => 'wheat',
+            '#f00' => 'red',
+            '#fa8072' => 'salmon',
+            '#a0522d' => 'sienna',
+            '#c0c0c0' => 'silver',
+            '#fffafa' => 'snow',
+            '#d2b48c' => 'tan',
+            '#008080' => 'teal',
+            '#ff6347' => 'tomato',
+            '#ee82ee' => 'violet',
+            '#f5deb3' => 'wheat',
             // or the other way around
-            'WHITE' => '#fff',
-            'BLACK' => '#000',
+            'black' => '#000',
+            'fuchsia' => '#f0f',
+            'magenta' => '#f0f',
+            'white' => '#fff',
+            'yellow' => '#ff0',
+            // and also `transparent`
+            'transparent' => '#fff0',
         );
 
         return preg_replace_callback(
             '/(?<=[: ])(' . implode('|', array_keys($colors)) . ')(?=[; }])/i',
             function ($match) use ($colors) {
-                return $colors[strtoupper($match[0])];
+                return $colors[strtolower($match[0])];
             },
             $content
         );
+    }
+
+    /**
+     * Convert RGB|HSL color codes.
+     * rgb(255,0,0,.5) -> rgb(255 0 0 / .5).
+     * rgb(255,0,0) -> #f00.
+     *
+     * @param string $content The CSS content to shorten the RGB color codes for
+     *
+     * @return string
+     */
+    protected function convertLegacyColors($content)
+    {
+        /*
+          https://drafts.csswg.org/css-color/#color-syntax-legacy
+          https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/rgb
+          https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl
+        */
+
+        // convert legacy color syntax
+        $content = preg_replace('/(rgb)a?\(\s*([0-9]{1,3}%?)\s*,\s*([0-9]{1,3}%?)\s*,\s*([0-9]{1,3}%?)\s*,\s*([0,1]?(?:\.[0-9]*)?)\s*\)/i', '$1($2 $3 $4 / $5)', $content);
+        $content = preg_replace('/(rgb)a?\(\s*([0-9]{1,3}%?)\s*,\s*([0-9]{1,3}%?)\s*,\s*([0-9]{1,3}%?)\s*\)/i', '$1($2 $3 $4)', $content);
+        $content = preg_replace('/(hsl)a?\(\s*([0-9]+(?:deg|grad|rad|turn)?)\s*,\s*([0-9]{1,3}%)\s*,\s*([0-9]{1,3}%)\s*,\s*([0,1]?(?:\.[0-9]*)?)\s*\)/i', '$1($2 $3 $4 / $5)', $content);
+        $content = preg_replace('/(hsl)a?\(\s*([0-9]+(?:deg|grad|rad|turn)?)\s*,\s*([0-9]{1,3}%)\s*,\s*([0-9]{1,3}%)\s*\)/i', '$1($2 $3 $4)', $content);
+
+        // convert `rgb` to `hex`
+        $dec = '([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])';
+
+        return preg_replace_callback(
+            "/rgb\($dec $dec $dec\)/i",
+            function ($match) {
+                return sprintf('#%02x%02x%02x', $match[1], $match[2], $match[3]);
+            },
+            $content
+        );
+    }
+
+    /**
+     * Cleanup RGB|HSL|HWB|LCH|LAB
+     * rgb(255 0 0 / 1) -> rgb(255 0 0).
+     * rgb(255 0 0 / 0) -> transparent.
+     *
+     * @param string $content The CSS content to cleanup HSL|HWB|LCH|LAB
+     *
+     * @return string
+     */
+    protected function cleanupModernColors($content)
+    {
+        /*
+          https://drafts.csswg.org/css-color/#color-syntax-modern
+          https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hwb
+          https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/lch
+          https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/lab
+          https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/oklch
+          https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/oklab
+        */
+        $tag = '(rgb|hsl|hwb|(?:(?:ok)?(?:lch|lab)))';
+
+        // remove alpha channel if it's pointless ..
+        $content = preg_replace('/' . $tag . '\(\s*([^\s)]+)\s+([^\s)]+)\s+([^\s)]+)\s+\/\s+1(?:(?:\.\d?)*|00%)?\s*\)/i', '$1($2 $3 $4)', $content);
+
+        // replace `transparent` with shortcut ..
+        $content = preg_replace('/' . $tag . '\(\s*[^\s)]+\s+[^\s)]+\s+[^\s)]+\s+\/\s+0(?:[\.0%]*)?\s*\)/i', '#fff0', $content);
+
+        return $content;
     }
 
     /**
@@ -1288,18 +1441,7 @@ class CSS extends Minify
      */
     protected function stripComments()
     {
-        // PHP only supports $this inside anonymous functions since 5.4
-        $minifier = $this;
-        $callback = function ($match) use ($minifier) {
-            $count = count($minifier->extracted);
-            $placeholder = '/*' . $count . '*/';
-            $minifier->extracted[$placeholder] = $match[0];
-
-            return $placeholder;
-        };
-        $this->registerPattern('/\n?\/\*(!|.*?@license|.*?@preserve).*?\*\/\n?/s', $callback);
-
-        $this->registerPattern('/\/\*.*?\*\//s', '');
+        $this->stripMultilineComments();
     }
 
     /**
@@ -1308,34 +1450,57 @@ class CSS extends Minify
      * @param string $content The CSS content to strip the whitespace for
      *
      * @return string
+     *
+     * @throws PatternMatchException
      */
     protected function stripWhitespace($content)
     {
         // remove leading & trailing whitespace
-        $content = preg_replace('/^\s*/m', '', $content);
-        $content = preg_replace('/\s*$/m', '', $content);
+        $content = $this->pregReplace('/^\s*/m', '', $content);
+        $content = $this->pregReplace('/\s*$/m', '', $content);
 
         // replace newlines with a single space
-        $content = preg_replace('/\s+/', ' ', $content);
+        $content = $this->pregReplace('/\s+/', ' ', $content);
 
         // remove whitespace around meta characters
         // inspired by stackoverflow.com/questions/15195750/minify-compress-css-with-regex
-        $content = preg_replace('/\s*([\*$~^|]?+=|[{};,>~]|!important\b)\s*/', '$1', $content);
-        $content = preg_replace('/([\[(:>\+])\s+/', '$1', $content);
-        $content = preg_replace('/\s+([\]\)>\+])/', '$1', $content);
-        $content = preg_replace('/\s+(:)(?![^\}]*\{)/', '$1', $content);
+        $content = $this->pregReplace('/\s*([\*$~^|]?+=|[{};,>~]|!important\b)\s*/', '$1', $content);
+        $content = $this->pregReplace('/([\[(:>\+])\s+/', '$1', $content);
+        $content = $this->pregReplace('/\s+([\]\)>\+])/', '$1', $content);
+        $content = $this->pregReplace('/\s+(:)(?![^\}]*\{)/', '$1', $content);
 
         // whitespace around + and - can only be stripped inside some pseudo-
         // classes, like `:nth-child(3+2n)`
         // not in things like `calc(3px + 2px)`, shorthands like `3px -2px`, or
         // selectors like `div.weird- p`
         $pseudos = array('nth-child', 'nth-last-child', 'nth-last-of-type', 'nth-of-type');
-        $content = preg_replace('/:(' . implode('|', $pseudos) . ')\(\s*([+-]?)\s*(.+?)\s*([+-]?)\s*(.*?)\s*\)/', ':$1($2$3$4$5)', $content);
+        $content = $this->pregReplace('/:(' . implode('|', $pseudos) . ')\(\s*([+-]?)\s*(.+?)\s*([+-]?)\s*(.*?)\s*\)/', ':$1($2$3$4$5)', $content);
 
         // remove semicolon/whitespace followed by closing bracket
         $content = str_replace(';}', '}', $content);
 
         return trim($content);
+    }
+
+    /**
+     * Perform a preg_replace and check for errors.
+     *
+     * @param string $pattern Pattern
+     * @param string $replacement Replacement
+     * @param string $subject String to process
+     *
+     * @return string
+     *
+     * @throws PatternMatchException
+     */
+    protected function pregReplace($pattern, $replacement, $subject)
+    {
+        $result = preg_replace($pattern, $replacement, $subject);
+        if ($result === null) {
+            throw PatternMatchException::fromLastError("Failed to replace with pattern '$pattern'");
+        }
+
+        return $result;
     }
 
     /**
@@ -1545,12 +1710,9 @@ class JS extends Minify
      */
     protected $operatorsAfter = array();
 
-    /**
-     * {@inheritdoc}
-     */
     public function __construct()
     {
-        call_user_func_array(array('parent', '__construct'), func_get_args());
+        call_user_func_array(array(parent::class, '__construct'), func_get_args());
 
         $dataDir = __DIR__ . '/../data/js/';
         $options = FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES;
@@ -1621,28 +1783,7 @@ class JS extends Minify
      */
     protected function stripComments()
     {
-        // PHP only supports $this inside anonymous functions since 5.4
-        $minifier = $this;
-        $callback = function ($match) use ($minifier) {
-            if (
-                substr($match[2], 0, 1) === '!' ||
-                strpos($match[2], '@license') !== false ||
-                strpos($match[2], '@preserve') !== false
-            ) {
-                // preserve multi-line comments that start with /*!
-                // or contain @license or @preserve annotations
-                $count = count($minifier->extracted);
-                $placeholder = '/*' . $count . '*/';
-                $minifier->extracted[$placeholder] = $match[0];
-
-                return $match[1] . $placeholder . $match[3];
-            }
-
-            return $match[1] . $match[3];
-        };
-
-        // multi-line comments
-        $this->registerPattern('/(\n?)\/\*(.*?)\*\/(\n?)/s', $callback);
+        $this->stripMultilineComments();
 
         // single-line comments
         $this->registerPattern('/\/\/.*$/m', '');
@@ -1897,7 +2038,7 @@ class JS extends Minify
      * This will prepare the given array by escaping all characters.
      *
      * @param string[] $operators
-     * @param string   $delimiter
+     * @param string $delimiter
      *
      * @return string[]
      */
@@ -1928,7 +2069,7 @@ class JS extends Minify
      * This will prepare the given array by escaping all characters.
      *
      * @param string[] $keywords
-     * @param string   $delimiter
+     * @param string $delimiter
      *
      * @return string[]
      */

@@ -1,6 +1,6 @@
 <p align="right"><a href="README-de.md">Deutsch</a> &nbsp; <a href="README.md">English</a> &nbsp; <a href="README-sv.md">Svenska</a></p>
 
-# Bundle 0.9.6
+# Bundle 0.9.7
 
 Bundle website files.
 
@@ -72,7 +72,7 @@ Website with bundled and unbundled files:
 
 ## Acknowledgements
 
-This extension includes [Minify 1.3.70](https://github.com/matthiasmullie/minify) by Matthias Mullie. Thank you for the good work.
+This extension includes [Minify 1.3.75](https://github.com/matthiasmullie/minify) by Matthias Mullie. Thank you for the good work.
 
 ## Developer
 

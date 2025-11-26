@@ -1,6 +1,6 @@
 <p align="right"><a href="README-de.md">Deutsch</a> &nbsp; <a href="README.md">English</a> &nbsp; <a href="README-sv.md">Svenska</a></p>
 
-# Bundle 0.9.6
+# Bundle 0.9.7
 
 Webseiten-Dateien bündeln.
 
@@ -72,7 +72,7 @@ Webseite mit gebündelten und ungebündelten Dateien:
 
 ## Danksagung
 
-Diese Erweiterung enthält [Minify 1.3.70](https://github.com/matthiasmullie/minify) von Matthias Mullie. Danke für die gute Arbeit.
+Diese Erweiterung enthält [Minify 1.3.75](https://github.com/matthiasmullie/minify) von Matthias Mullie. Danke für die gute Arbeit.
 
 ## Entwickler
 
