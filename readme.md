@@ -1,8 +1,6 @@
-<p align="right"><a href="readme-de.md">Deutsch</a> &nbsp; <a href="readme.md">English</a> &nbsp; <a href="readme-sv.md">Svenska</a></p>
-
 # Bundle 0.9.7
 
-Bundle website files.
+Bundle website files. Developed by Anna Svensson.
 
 <p align="center"><img src="screenshot.png" alt="Screenshot"></p>
 
@@ -74,6 +72,4 @@ Website with bundled and unbundled files:
 
 This extension includes [Minify 1.3.75](https://github.com/matthiasmullie/minify) by Matthias Mullie. Thank you for the good work.
 
-## Developer
-
-Anna Svensson. [Get help](https://datenstrom.se/yellow/help/).
+Do you have questions? [Get help](https://datenstrom.se/yellow/help/).

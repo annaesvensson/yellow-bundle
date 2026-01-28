@@ -1,8 +1,6 @@
-<p align="right"><a href="readme-de.md">Deutsch</a> &nbsp; <a href="readme.md">English</a> &nbsp; <a href="readme-sv.md">Svenska</a></p>
-
 # Bundle 0.9.7
 
-Webseiten-Dateien bündeln.
+Webseiten-Dateien bündeln. Entwickelt von Anna Svensson.
 
 <p align="center"><img src="screenshot.png" alt="Bildschirmfoto"></p>
 
@@ -74,6 +72,4 @@ Webseite mit gebündelten und ungebündelten Dateien:
 
 Diese Erweiterung enthält [Minify 1.3.75](https://github.com/matthiasmullie/minify) von Matthias Mullie. Danke für die gute Arbeit.
 
-## Entwickler
-
-Anna Svensson. [Hilfe finden](https://datenstrom.se/de/yellow/help/).
+Hast du Fragen? [Hilfe finden](https://datenstrom.se/de/yellow/help/).

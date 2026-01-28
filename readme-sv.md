@@ -1,8 +1,6 @@
-<p align="right"><a href="readme-de.md">Deutsch</a> &nbsp; <a href="readme.md">English</a> &nbsp; <a href="readme-sv.md">Svenska</a></p>
-
 # Bundle 0.9.7
 
-Bundla webbplatsfiler.
+Bundla webbplatsfiler. Utvecklad av Anna Svensson.
 
 <p align="center"><img src="screenshot.png" alt="Skärmdump"></p>
 
@@ -74,6 +72,4 @@ Webbplats med bundna och obundna filer:
 
 Detta tillägg innehåller [Minify 1.3.75](https://github.com/matthiasmullie/minify) av Matthias Mullie. Tack för ett bra jobb.
 
-## Utvecklare
-
-Anna Svensson. [Få hjälp](https://datenstrom.se/sv/yellow/help/).
+Har du några frågor? [Få hjälp](https://datenstrom.se/sv/yellow/help/).
