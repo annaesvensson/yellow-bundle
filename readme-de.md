@@ -2,7 +2,7 @@
 
 Webseiten-Dateien bündeln. Entwickelt von Anna Svensson.
 
-<p align="center"><img src="screenshot.png" alt="Bildschirmfoto"></p>
+<p align="center"><img src="screenshot.png" alt="Bildschirmfoto" /></p>
 
 ## Wie man eine Erweiterung installiert
 
