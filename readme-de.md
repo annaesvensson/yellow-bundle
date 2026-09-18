@@ -1,4 +1,4 @@
-# Bundle 0.9.7
+# Bundle 0.9.8
 
 Webseiten-Dateien bündeln. Entwickelt von Anna Svensson.
 

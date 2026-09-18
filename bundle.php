@@ -2,7 +2,7 @@
 // Bundle extension, https://github.com/annaesvensson/yellow-bundle
 
 class YellowBundle {
-    const VERSION = "0.9.7";
+    const VERSION = "0.9.8";
     public $yellow;         // access to API
 
     // Handle initialisation
@@ -2215,7 +2215,7 @@ class Converter implements ConverterInterface {
     }
 }
 
-// Bundle extension, Copyright Datenstrom, License GPLv2
+// Bundle extension, Copyright Datenstrom and contributors, License EUPLv1.2-only
 
 class MinifyCss extends CSS { }
 

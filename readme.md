@@ -1,4 +1,4 @@
-# Bundle 0.9.7
+# Bundle 0.9.8
 
 Bundle website files. Developed by Anna Svensson.
 

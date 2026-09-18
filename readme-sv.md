@@ -1,4 +1,4 @@
-# Bundle 0.9.7
+# Bundle 0.9.8
 
 Bundla webbplatsfiler. Utvecklad av Anna Svensson.
 
