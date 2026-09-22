@@ -70,6 +70,6 @@ Webseite mit gebündelten und ungebündelten Dateien:
 
 ## Danksagung
 
-Diese Erweiterung enthält [Minify 1.3.75](https://github.com/matthiasmullie/minify) von Matthias Mullie. Danke für die gute Arbeit.
+Diese Erweiterung enthält [Minify 1.3.75](https://github.com/matthiasmullie/minify) von Matthias Mullie. Danke für die nützliche Bibliothek.
 
 Hast du Fragen? [Hilfe finden](https://datenstrom.se/de/yellow/help/).

@@ -70,6 +70,6 @@ Website with bundled and unbundled files:
 
 ## Acknowledgements
 
-This extension includes [Minify 1.3.75](https://github.com/matthiasmullie/minify) by Matthias Mullie. Thank you for the good work.
+This extension includes [Minify 1.3.75](https://github.com/matthiasmullie/minify) by Matthias Mullie. Thank you for the useful library.
 
 Do you have questions? [Get help](https://datenstrom.se/yellow/help/).
