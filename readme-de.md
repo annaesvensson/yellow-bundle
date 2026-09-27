@@ -1,4 +1,4 @@
-# Bundle 1.0.1
+# Bundle 1.0.2
 
 Webseiten-Dateien bündeln. Entwickelt von Anna Svensson.
 
@@ -23,11 +23,11 @@ Webseite mit ungebündelten CSS- und JavaScript-Dateien:
 <html>
 <head>
 <title>Example page</title>
-<link rel="stylesheet" type="text/css" media="all" href="/assets/gallery.css" />
-<link rel="stylesheet" type="text/css" media="all" href="/assets/icon.css" />
-<link rel="stylesheet" type="text/css" media="all" href="/assets/stockholm.css" />
-<script type="text/javascript" defer="defer" src="/assets/gallery-photoswipe.min.js"></script>
-<script type="text/javascript" defer="defer" src="/assets/gallery.js"></script>
+<link rel="stylesheet" href="/assets/gallery.css" />
+<link rel="stylesheet" href="/assets/icon.css" />
+<link rel="stylesheet" href="/assets/stockholm.css" />
+<script defer="defer" src="/assets/gallery-photoswipe.min.js"></script>
+<script defer="defer" src="/assets/gallery.js"></script>
 </head>
 <body>
 <h1>Hello world</h1>
@@ -42,8 +42,8 @@ Webseite mit gebündelten CSS- und JavaScript-Dateien:
 <html>
 <head>
 <title>Example page</title>
-<link rel="stylesheet" type="text/css" media="all" href="/assets/bundle-dfd1ef8a4c.min.css" />
-<script type="text/javascript" defer="defer" src="/assets/bundle-3808f805bc.min.js"></script>
+<link rel="stylesheet" href="/assets/bundle-dfd1ef8a4c.min.css" />
+<script defer="defer" src="/assets/bundle-3808f805bc.min.js"></script>
 </head>
 <body>
 <h1>Hello world</h1>
@@ -58,9 +58,9 @@ Webseite mit gebündelten und ungebündelten Dateien:
 <html>
 <head>
 <title>Example page</title>
-<link rel="stylesheet" type="text/css" media="all" href="/assets/bundle-dfd1ef8a4c.min.css" />
-<script type="text/javascript" defer="defer" src="/assets/bundle-3808f805bc.min.js"></script>
-<script type="text/javascript" defer="defer" data-bundle="exclude" src="/assets/debug.js"></script>
+<link rel="stylesheet" href="/assets/bundle-dfd1ef8a4c.min.css" />
+<script defer="defer" src="/assets/bundle-3808f805bc.min.js"></script>
+<script defer="defer" data-bundle="exclude" src="/assets/debug.js"></script>
 </head>
 <body>
 <h1>Hello world</h1>

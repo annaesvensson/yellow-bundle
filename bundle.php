@@ -2,7 +2,7 @@
 // Bundle extension, https://github.com/annaesvensson/yellow-bundle
 
 class YellowBundle {
-    const VERSION = "1.0.1";
+    const VERSION = "1.0.2";
     public $yellow;         // access to API
 
     // Handle initialisation
@@ -89,9 +89,9 @@ class YellowBundle {
             $locationBundle = $base.$this->yellow->system->get("coreAssetLocation")."bundle-$id.min.$type";
             $rawDataAttribute = $attribute=="defer" ? "defer=\"defer\" " : "";
             if ($type=="css") {
-                $data[$locationBundle] = "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".htmlspecialchars($locationBundle)."\" />\n";
+                $data[$locationBundle] = "<link rel=\"stylesheet\" href=\"".htmlspecialchars($locationBundle)."\" />\n";
             } else {
-                $data[$locationBundle] = "<script type=\"text/javascript\" {$rawDataAttribute}src=\"".htmlspecialchars($locationBundle)."\"></script>\n";
+                $data[$locationBundle] = "<script {$rawDataAttribute}src=\"".htmlspecialchars($locationBundle)."\"></script>\n";
             }
             if ($this->yellow->toolbox->getFileModified($fileNameBundle)!=$modified) {
                 $fileDataBundle = "";
