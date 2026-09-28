@@ -24,7 +24,7 @@ Webseite mit ungebündelten CSS- und JavaScript-Dateien:
 <head>
 <title>Example page</title>
 <link rel="stylesheet" href="/assets/gallery.css" />
-<link rel="stylesheet" href="/assets/icon.css" />
+<link rel="stylesheet" href="/assets/highlight.css" />
 <link rel="stylesheet" href="/assets/stockholm.css" />
 <script defer="defer" src="/assets/gallery-photoswipe.min.js"></script>
 <script defer="defer" src="/assets/gallery.js"></script>
